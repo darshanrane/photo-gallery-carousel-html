@@ -1,0 +1,251 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Photo Gallery | Carousel in HTML</title>
+
+<script language="javascript">
+var flag = false;
+function pause()
+{
+	if(flag == true)
+	{
+		zxcSCarouselI('c1',-1,'', 20);
+		flag = false;
+	}
+	else
+	{
+		zxcSCarouselI('c1',0,'', 20);
+		flag = true;
+	}
+}
+
+function zxcSCarouselI(id,spd,mde,timer)
+{
+ 	
+ var obj = zxcSCarouselI['c1'];
+ if (!obj) 
+ {
+     var mde = ['left', 'offsetLeft', 'offsetWidth', 'width', 'top'],
+         p = document.getElementById(id),
+         s = p.getElementsByTagName('DIV')[0],
+         oop;
+     s.style.position = 'absolute';
+     s.style[mde[0]] = '0px';
+     s.style[mde[3]] = '30000px';
+     var clds = s.childNodes,
+         ary = [],
+         z0 = 0
+     for (var z0 = 0; z0 < clds.length; z0++) 
+	 {
+         if (clds[z0].nodeType == 1) 
+		 {
+             ary.push(clds[z0]);
+         }
+     }
+     var lgth = ary.length - 1,
+         w = ary[lgth][mde[1]] + ary[lgth][mde[2]],
+         nu = Math.ceil(p[mde[2]] / w) + 1,
+         c, z1 = 1;
+     s.style[mde[3]] = w + 5 + 'px';
+     for (; z1 < nu; z1++) {
+         c = s.cloneNode(true);
+         c.style[mde[0]] = w * z1 + 'px';
+         c.style[mde[4]] = '0px';
+         s.appendChild(c);
+     }
+     zxcSCarouselI[id] = obj = {
+         sz: w,
+         ary: ary,
+         lft: 0,
+         mde: mde,
+         slide: s
+     }
+     p.style.overflow = 'hidden';
+ }
+ 
+ if (obj && typeof (spd) == 'number') 
+ {
+     var sz = obj.sz,
+     lft = obj.lft + spd;
+     clearTimeout(obj.to);
+     obj.lft = lft > 0 && spd > 0 ? -sz + spd : lft + spd < -sz + spd && spd < 0 ? 0 : lft;
+     obj.slide.style[obj.mde[0]] = obj.lft + 'px';
+     obj.to = setTimeout(function () 
+	 {
+         zxcSCarouselI(id, spd);
+     }, timer);
+ }
+ 
+}
+
+function zxcSCarouselIGoTo(id,nu){
+ var obj=zxcSCarouselI[id];
+ if (obj&&obj.ary[nu])
+ { 
+  obj.lft=-obj.ary[nu][obj.mde[1]];
+  zxcSCarouselI(id,0)
+ }
+ flag = true;
+ 
+ 
+ setTimeout(mouseoutRightSlider, 3000);
+}
+
+function mouseoverLeftSlider() { zxcSCarouselI('c1',3,'',20); flag = false; }
+function mouseoutLeftSlider() {	zxcSCarouselI('c1',1,'',20); flag = false; }
+function mouseoverRightSlider(){ zxcSCarouselI('c1',-3,'',20); flag = false; }
+function mouseoutRightSlider() { zxcSCarouselI('c1',-1,'',20); flag = false; }
+function Init() { zxcSCarouselI('c1',-1,'', 20); }
+
+if (window.addEventListener){
+ window.addEventListener('load',Init, false);
+}
+else if (window.attachEvent){
+ window.attachEvent('onload',Init);
+}
+</script>
+   
+<style>
+body
+{
+	font-family:Verdana, Geneva, sans-serif;
+	color:#333333;
+}
+
+.buttons 
+{
+  position:absolute;left:0px;top:150px;width:100%;text-Align:center;
+}
+
+.buttons INPUT {
+  width:60px;background-Color:#FFCC66;
+}
+
+.slider 
+{
+ position:relative;
+ overflow:hidden;
+ width:940px;
+ height:400px;
+ float:left;
+ background:#fff;
+}
+
+
+.slider img
+{
+ margin-left:5px;
+ float:left;
+ padding-top:25px;
+}
+
+.left
+{
+	float:left;
+	width:15px;
+	z-index:11;
+	position:absolute;
+	margin-top:-30px;
+}
+.right
+{
+	float:left;
+	width:15px;
+	z-index:10;
+	position:absolute;
+	margin-top:-30px;
+	margin-left:900px;
+}
+   
+body
+{
+	font-size:12px;
+	padding:0;
+	margin:0;
+	background:#ccc;
+}
+body img
+{
+	border:none;
+}
+body a
+{
+	text-decoration:none;
+}
+.brands
+{
+	margin:0 auto;
+	text-align:left;
+	padding-top:10px;
+	float:left;
+	font-size:14px;
+	padding:35px 27px 0 30px;
+	line-height:25px;
+	color:#7d7d7d;
+	width:600px; 
+	
+}
+.brands a
+{
+	text-decoration:none;
+	color:#7d7d7d;
+	/*padding-right:10px;*/
+}
+
+.main
+{
+ width:100%;
+ position: absolute;
+ top:50%;
+ margin-top:-380px;
+}
+.main-sub
+{
+ width:1000px;
+ margin:0 auto;
+ background:#ccc;
+}
+.ttle
+{
+	height:45px;
+	padding:62px 27px 18px 30px;
+	font-size:15px;
+}
+.ttle span
+{
+	float:right;
+	vertical-align:bottom;
+	padding-right:5px;
+}
+</style>
+
+</head>
+
+<body>
+<div class="main">
+	<div class="main-sub">
+		<div class="ttle">
+        	Photo Gallery | Carousel | HTML, CSS, Javascript
+        </div>
+        <div class="left">
+            <img src="images/arrow-left.png" width="45" height="460" onmouseover="mouseoverLeftSlider();" onmouseout="mouseoutLeftSlider();" />         </div>
+          <div id="c1" class="slider">
+               <div id="imgcontainer" onclick="pause();">
+                    <img src="images/atthesea1.jpg" /> <img src="images/atthesea2.jpg" /> 
+                    <img src="images/green1.jpg" /> <img src="images/green2.jpg" /> <img src="images/green3.jpg" /> 
+                    <img src="images/stadium1.jpg" /> <img src="images/stadium2.jpg" /> 
+               </div>
+          </div>
+          <div class="right">
+            <img src="images/arrow-right.png" width="45" height="460" onmouseover="mouseoverRightSlider();" onmouseout="mouseoutRightSlider();" /> 
+          </div>
+          <div class="brands">
+            <a href="#" onClick="zxcSCarouselIGoTo('c1', 0);">at the sea</a> |
+            <a href="#" onClick="zxcSCarouselIGoTo('c1', 2);">green</a> |
+            <a href="#" onClick="zxcSCarouselIGoTo('c1', 5);">stadium</a>
+        </div>
+</div>
+</div>
+</body>
+</html>
